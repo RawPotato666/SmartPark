@@ -1,11 +1,11 @@
 namespace SmartPark.Models;
-
 public class ParkingSpot
 {
-    public int ParkingSpotID { get; set; }
-    public int ParkingLotID { get; set; }
-    public bool IsOccupied { get; set; }
+    public int Id { get; set; }
+    public bool IsDisabled { get; set; }        // Invalidno
+    public int ParkingLotId { get; set; }
 
-    // Navigation property
-    public ParkingLot? ParkingLot { get; set; } // it can't be null, remove after
+    // Relationships
+    public ParkingLot ParkingLot { get; set; } = null!; // Which lot it belongs to
+    public ICollection<Reservation>? Reservations { get; set; }  // All reservations for this spot
 }

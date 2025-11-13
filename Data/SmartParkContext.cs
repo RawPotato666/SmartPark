@@ -12,15 +12,15 @@ public class SmartParkContext : DbContext
     public DbSet<ParkingLot> ParkingLots { get; set; }
     public DbSet<ParkingSpot> ParkingSpots { get; set; }
     public DbSet<Reservation> Reservations { get; set; }
-    public DbSet<UserSM> UserSMs { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<Administrator> Administrators { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+        modelBuilder.Entity<User>().ToTable("User");
+        modelBuilder.Entity<Administrator>().ToTable("Administrator");
         modelBuilder.Entity<ParkingLot>().ToTable("Parking Lot");
         modelBuilder.Entity<ParkingSpot>().ToTable("Parking Spot");
         modelBuilder.Entity<Reservation>().ToTable("Reservation");
-        modelBuilder.Entity<UserSM>().ToTable("UserSM");
-        modelBuilder.Entity<Administrator>().ToTable("Administrator");
     }
 }

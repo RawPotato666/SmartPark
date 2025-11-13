@@ -1,15 +1,11 @@
 namespace SmartPark.Models;
-
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 public class Administrator
 {
-    public int AdministratorID { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public int Id { get; set; }
     public string? AdminName { get; set; }
-    public string? AdminPassword { get; set; }
 
-    // navigation to all models, since the administrator can access all of them
-
-    public ICollection<UserSM>? UserSMs { get; set; }
-    public ICollection<ParkingLot>? ParkingLots { get; set; }
-    public ICollection<Reservation>? Reservations { get; set; }
-    public ICollection<ParkingSpot>? ParkingSpots { get; set; }
+    public ICollection<User>? Users { get; set; }  
 }

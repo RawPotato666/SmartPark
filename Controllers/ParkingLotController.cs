@@ -34,7 +34,7 @@ namespace SmartPark.Controllers
             }
 
             var parkingLot = await _context.ParkingLots
-                .FirstOrDefaultAsync(m => m.ParkingLotID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (parkingLot == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace SmartPark.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ParkingLotID,Location,Capacity")] ParkingLot parkingLot)
+        public async Task<IActionResult> Create([Bind("Id,Location,Capacity,DisabledSpots")] ParkingLot parkingLot)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +86,9 @@ namespace SmartPark.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ParkingLotID,Location,Capacity")] ParkingLot parkingLot)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Location,Capacity,DisabledSpots")] ParkingLot parkingLot)
         {
-            if (id != parkingLot.ParkingLotID)
+            if (id != parkingLot.Id)
             {
                 return NotFound();
             }
@@ -102,7 +102,7 @@ namespace SmartPark.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ParkingLotExists(parkingLot.ParkingLotID))
+                    if (!ParkingLotExists(parkingLot.Id))
                     {
                         return NotFound();
                     }
@@ -125,7 +125,7 @@ namespace SmartPark.Controllers
             }
 
             var parkingLot = await _context.ParkingLots
-                .FirstOrDefaultAsync(m => m.ParkingLotID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (parkingLot == null)
             {
                 return NotFound();
@@ -151,7 +151,7 @@ namespace SmartPark.Controllers
 
         private bool ParkingLotExists(int id)
         {
-            return _context.ParkingLots.Any(e => e.ParkingLotID == id);
+            return _context.ParkingLots.Any(e => e.Id == id);
         }
     }
 }

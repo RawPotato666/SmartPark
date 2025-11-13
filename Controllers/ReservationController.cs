@@ -22,7 +22,7 @@ namespace SmartPark.Controllers
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
-            var smartParkContext = _context.Reservations.Include(r => r.ParkingSpot).Include(r => r.UserSM);
+            var smartParkContext = _context.Reservations.Include(r => r.ParkingSpot).Include(r => r.User);
             return View(await smartParkContext.ToListAsync());
         }
 
@@ -36,8 +36,8 @@ namespace SmartPark.Controllers
 
             var reservation = await _context.Reservations
                 .Include(r => r.ParkingSpot)
-                .Include(r => r.UserSM)
-                .FirstOrDefaultAsync(m => m.ReservationID == id);
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
                 return NotFound();
@@ -49,8 +49,8 @@ namespace SmartPark.Controllers
         // GET: Reservation/Create
         public IActionResult Create()
         {
-            ViewData["ParkingSpotID"] = new SelectList(_context.ParkingSpots, "ParkingSpotID", "ParkingSpotID");
-            ViewData["UserSMId"] = new SelectList(_context.UserSMs, "Id", "Id");
+            ViewData["ParkingSpotId"] = new SelectList(_context.ParkingSpots, "Id", "Id");
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
@@ -59,7 +59,7 @@ namespace SmartPark.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationID,UserSMId,ParkingSpotID,StartTime,EndTime")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,UserId,ParkingSpotId,Start,End")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -67,8 +67,8 @@ namespace SmartPark.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParkingSpotID"] = new SelectList(_context.ParkingSpots, "ParkingSpotID", "ParkingSpotID", reservation.ParkingSpotID);
-            ViewData["UserSMId"] = new SelectList(_context.UserSMs, "Id", "Id", reservation.UserSMId);
+            ViewData["ParkingSpotId"] = new SelectList(_context.ParkingSpots, "Id", "Id", reservation.ParkingSpotId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", reservation.UserId);
             return View(reservation);
         }
 
@@ -85,8 +85,8 @@ namespace SmartPark.Controllers
             {
                 return NotFound();
             }
-            ViewData["ParkingSpotID"] = new SelectList(_context.ParkingSpots, "ParkingSpotID", "ParkingSpotID", reservation.ParkingSpotID);
-            ViewData["UserSMId"] = new SelectList(_context.UserSMs, "Id", "Id", reservation.UserSMId);
+            ViewData["ParkingSpotId"] = new SelectList(_context.ParkingSpots, "Id", "Id", reservation.ParkingSpotId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", reservation.UserId);
             return View(reservation);
         }
 
@@ -95,9 +95,9 @@ namespace SmartPark.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservationID,UserSMId,ParkingSpotID,StartTime,EndTime")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,UserId,ParkingSpotId,Start,End")] Reservation reservation)
         {
-            if (id != reservation.ReservationID)
+            if (id != reservation.Id)
             {
                 return NotFound();
             }
@@ -111,7 +111,7 @@ namespace SmartPark.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ReservationExists(reservation.ReservationID))
+                    if (!ReservationExists(reservation.Id))
                     {
                         return NotFound();
                     }
@@ -122,8 +122,8 @@ namespace SmartPark.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParkingSpotID"] = new SelectList(_context.ParkingSpots, "ParkingSpotID", "ParkingSpotID", reservation.ParkingSpotID);
-            ViewData["UserSMId"] = new SelectList(_context.UserSMs, "Id", "Id", reservation.UserSMId);
+            ViewData["ParkingSpotId"] = new SelectList(_context.ParkingSpots, "Id", "Id", reservation.ParkingSpotId);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", reservation.UserId);
             return View(reservation);
         }
 
@@ -137,8 +137,8 @@ namespace SmartPark.Controllers
 
             var reservation = await _context.Reservations
                 .Include(r => r.ParkingSpot)
-                .Include(r => r.UserSM)
-                .FirstOrDefaultAsync(m => m.ReservationID == id);
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)
             {
                 return NotFound();
@@ -164,7 +164,7 @@ namespace SmartPark.Controllers
 
         private bool ReservationExists(int id)
         {
-            return _context.Reservations.Any(e => e.ReservationID == id);
+            return _context.Reservations.Any(e => e.Id == id);
         }
     }
 }

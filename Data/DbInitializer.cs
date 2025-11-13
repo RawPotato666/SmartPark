@@ -13,31 +13,33 @@ namespace SmartPark.Data
             context.Database.EnsureCreated();
 
             // --- SEED USERS (Uporabniki) ---
-            if (context.UserSMs.Any())
+            if (context.Users.Any())
             {
                 return; // DB already seeded
             }
 
-            var userSMja = new UserSM[]
+            var users = new User[]
             {
-                new UserSM { FirstName = "Janez", LastName = "Novak", Email = "janez.novak@example.com", Phone = "+38640123456" },
-                new UserSM { FirstName = "Ana", LastName= "Kovač", Email = "ana.kovac@example.com", Phone = "+38640123457" },
-                new UserSM { FirstName = "Miha", LastName = "Horvat", Email = "miha.horvat@example.com", Phone = "+38640123458" }
+                new User { FirstName = "Janez", LastName = "Novak", Username = "janez.novak" },
+                new User { FirstName = "Ana", LastName= "Kovač", Username = "ana.kovac" },
+                new User { FirstName = "Miha", LastName = "Horvat", Username = "miha.horvat" }
             };
-            context.UserSMs.AddRange(userSMja);
+            context.Users.AddRange(users);
             context.SaveChanges();
 
             var administrators = new Administrator[]
             {
-                new Administrator { AdminName = "Admin1", AdminPassword = "Aksd" },
-                new Administrator { AdminName = "Admin2", AdminPassword = "bskak" }
+                new Administrator { Id = 1, AdminName = "Admin1" },
+                new Administrator { Id = 2, AdminName = "Admin2" }
             };
+            context.Administrators.AddRange(administrators);
+            context.SaveChanges();
 
             // --- SEED PARKIRIŠČA (Parking lots) ---
             var parkingL = new ParkingLot[]
             {
-                new ParkingLot { Location = "Ljubljana - Center", Capacity = 100 },
-                new ParkingLot { Location = "Ljubljana - BTC", Capacity = 200 }
+                new ParkingLot { Location = "Ljubljana - Center", Capacity = 10, DisabledSpots = 2 },
+                new ParkingLot { Location = "Ljubljana - BTC", Capacity = 20, DisabledSpots = 4 }
             };
             context.ParkingLots.AddRange(parkingL);
             context.SaveChanges();
@@ -45,9 +47,9 @@ namespace SmartPark.Data
             // --- SEED PARKIRNA MESTA (Parking spots) ---
             var parkingSpots = new ParkingSpot[]
             {
-                new ParkingSpot { IsOccupied = false, ParkingLotID = parkingL[0].ParkingLotID },
-                new ParkingSpot { IsOccupied = false, ParkingLotID = parkingL[0].ParkingLotID },
-                new ParkingSpot { IsOccupied = true,  ParkingLotID = parkingL[1].ParkingLotID }
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = true , ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id }
             };
             context.ParkingSpots.AddRange(parkingSpots);
             context.SaveChanges();
@@ -57,19 +59,17 @@ namespace SmartPark.Data
             {
                 new Reservation
                 {
-                    ReservationID = 1,
-                    UserSMId = userSMja[0].Id,
-                    ParkingSpotID = parkingSpots[2].ParkingSpotID,
-                    StartTime = DateTime.Now.AddHours(-1),
-                    EndTime = DateTime.Now.AddHours(2)
+                    UserId = users[0].Id,
+                    ParkingSpotId = parkingSpots[2].Id,
+                    Start = DateTime.Now.AddHours(-1),
+                    End = DateTime.Now.AddHours(2)
                 },
                 new Reservation
                 {
-                    ReservationID = 2,
-                    UserSMId = userSMja[1].Id,
-                    ParkingSpotID = parkingSpots[1].ParkingSpotID,
-                    StartTime = DateTime.Now.AddHours(1),
-                    EndTime = DateTime.Now.AddHours(3)
+                    UserId = users[1].Id,
+                    ParkingSpotId = parkingSpots[0].Id,
+                    Start = DateTime.Now.AddHours(1),
+                    End = DateTime.Now.AddHours(3)
                 }
             };
             context.Reservations.AddRange(reservations);

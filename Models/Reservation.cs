@@ -1,14 +1,13 @@
 namespace SmartPark.Models;
+public class Reservation
+{
+    public int Id { get; set; }
+    public int UserId { get; set; }
+    public int ParkingSpotId { get; set; }
+    public DateTime Start { get; set; }
+    public DateTime End { get; set; }
 
-    public class Reservation
-    {
-        public int ReservationID { get; set; }
-        public int UserSMId { get; set; }
-        public int ParkingSpotID { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
-
-        // Navigation properties
-        public UserSM? UserSM { get; set; }
-        public ParkingSpot? ParkingSpot { get; set; }
-    }
+    // Relationships
+    public User User { get; set; } = null!;         // goes to an user
+    public ParkingSpot ParkingSpot { get; set; }  = null!; // Which spot is reserved
+}

@@ -12,16 +12,16 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ParkingSpotID" />
-            <div class="form-group">
-                <label asp-for="ParkingLotID" class="control-label"></label>
-                <select asp-for="ParkingLotID" class="form-control" asp-items="ViewBag.ParkingLotID"></select>
-                <span asp-validation-for="ParkingLotID" class="text-danger"></span>
-            </div>
+            <input type="hidden" asp-for="Id" />
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsOccupied" /> @Html.DisplayNameFor(model => model.IsOccupied)
+                    <input class="form-check-input" asp-for="IsDisabled" /> @Html.DisplayNameFor(model => model.IsDisabled)
                 </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="ParkingLotId" class="control-label"></label>
+                <select asp-for="ParkingLotId" class="form-control" asp-items="ViewBag.ParkingLotId"></select>
+                <span asp-validation-for="ParkingLotId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

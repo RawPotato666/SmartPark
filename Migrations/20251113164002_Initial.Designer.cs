@@ -12,90 +12,33 @@ using SmartPark.Data;
 namespace SmartPark.Migrations
 {
     [DbContext(typeof(SmartParkContext))]
-    [Migration("20251109183949_InitialSmartPark")]
-    partial class InitialSmartPark
+    [Migration("20251113164002_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.21")
+                .HasAnnotation("ProductVersion", "8.0.22")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SmartPark.Models.ParkingLot", b =>
+            modelBuilder.Entity("SmartPark.Models.Administrator", b =>
                 {
-                    b.Property<int>("ParkingLotID")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParkingLotID"));
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .IsRequired()
+                    b.Property<string>("AdminName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ParkingLotID");
+                    b.HasKey("Id");
 
-                    b.ToTable("Parking Lot", (string)null);
+                    b.ToTable("Administrator", (string)null);
                 });
 
-            modelBuilder.Entity("SmartPark.Models.ParkingSpot", b =>
-                {
-                    b.Property<int>("ParkingSpotID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParkingSpotID"));
-
-                    b.Property<bool>("IsOccupied")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ParkingLotID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ParkingSpotID");
-
-                    b.HasIndex("ParkingLotID");
-
-                    b.ToTable("Parking Spot", (string)null);
-                });
-
-            modelBuilder.Entity("SmartPark.Models.Reservation", b =>
-                {
-                    b.Property<int>("ReservationID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReservationID"));
-
-                    b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ParkingSpotID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserSMId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ReservationID");
-
-                    b.HasIndex("ParkingSpotID");
-
-                    b.HasIndex("UserSMId");
-
-                    b.ToTable("Reservation", (string)null);
-                });
-
-            modelBuilder.Entity("SmartPark.Models.UserSM", b =>
+            modelBuilder.Entity("SmartPark.Models.ParkingLot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -103,9 +46,81 @@ namespace SmartPark.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
+                    b.Property<int>("Capacity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DisabledSpots")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Parking Lot", (string)null);
+                });
+
+            modelBuilder.Entity("SmartPark.Models.ParkingSpot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("IsDisabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ParkingLotId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParkingLotId");
+
+                    b.ToTable("Parking Spot", (string)null);
+                });
+
+            modelBuilder.Entity("SmartPark.Models.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ParkingSpotId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParkingSpotId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reservation", (string)null);
+                });
+
+            modelBuilder.Entity("SmartPark.Models.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AdministratorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -115,20 +130,22 @@ namespace SmartPark.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserSM", (string)null);
+                    b.HasIndex("AdministratorId");
+
+                    b.ToTable("User", (string)null);
                 });
 
             modelBuilder.Entity("SmartPark.Models.ParkingSpot", b =>
                 {
                     b.HasOne("SmartPark.Models.ParkingLot", "ParkingLot")
                         .WithMany("ParkingSpots")
-                        .HasForeignKey("ParkingLotID")
+                        .HasForeignKey("ParkingLotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -138,25 +155,49 @@ namespace SmartPark.Migrations
             modelBuilder.Entity("SmartPark.Models.Reservation", b =>
                 {
                     b.HasOne("SmartPark.Models.ParkingSpot", "ParkingSpot")
-                        .WithMany()
-                        .HasForeignKey("ParkingSpotID")
+                        .WithMany("Reservations")
+                        .HasForeignKey("ParkingSpotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartPark.Models.UserSM", "UserSM")
-                        .WithMany()
-                        .HasForeignKey("UserSMId")
+                    b.HasOne("SmartPark.Models.User", "User")
+                        .WithMany("Reservations")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("ParkingSpot");
 
-                    b.Navigation("UserSM");
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SmartPark.Models.User", b =>
+                {
+                    b.HasOne("SmartPark.Models.Administrator", "Administrator")
+                        .WithMany("Users")
+                        .HasForeignKey("AdministratorId");
+
+                    b.Navigation("Administrator");
+                });
+
+            modelBuilder.Entity("SmartPark.Models.Administrator", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("SmartPark.Models.ParkingLot", b =>
                 {
                     b.Navigation("ParkingSpots");
+                });
+
+            modelBuilder.Entity("SmartPark.Models.ParkingSpot", b =>
+                {
+                    b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("SmartPark.Models.User", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

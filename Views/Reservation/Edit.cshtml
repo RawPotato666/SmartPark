@@ -12,26 +12,26 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ReservationID" />
+            <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="UserSMId" class="control-label"></label>
-                <select asp-for="UserSMId" class="form-control" asp-items="ViewBag.UserSMId"></select>
-                <span asp-validation-for="UserSMId" class="text-danger"></span>
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="ParkingSpotID" class="control-label"></label>
-                <select asp-for="ParkingSpotID" class="form-control" asp-items="ViewBag.ParkingSpotID"></select>
-                <span asp-validation-for="ParkingSpotID" class="text-danger"></span>
+                <label asp-for="ParkingSpotId" class="control-label"></label>
+                <select asp-for="ParkingSpotId" class="form-control" asp-items="ViewBag.ParkingSpotId"></select>
+                <span asp-validation-for="ParkingSpotId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="StartTime" class="control-label"></label>
-                <input asp-for="StartTime" class="form-control" />
-                <span asp-validation-for="StartTime" class="text-danger"></span>
+                <label asp-for="Start" class="control-label"></label>
+                <input asp-for="Start" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EndTime" class="control-label"></label>
-                <input asp-for="EndTime" class="form-control" />
-                <span asp-validation-for="EndTime" class="text-danger"></span>
+                <label asp-for="End" class="control-label"></label>
+                <input asp-for="End" class="form-control" />
+                <span asp-validation-for="End" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

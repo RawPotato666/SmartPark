@@ -10,22 +10,22 @@ using SmartPark.Models;
 
 namespace SmartPark.Controllers
 {
-    public class UserSMController : Controller
+    public class AdministratorController : Controller
     {
         private readonly SmartParkContext _context;
 
-        public UserSMController(SmartParkContext context)
+        public AdministratorController(SmartParkContext context)
         {
             _context = context;
         }
 
-        // GET: UserSM
+        // GET: Administrator
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UserSMs.ToListAsync());
+            return View(await _context.Administrators.ToListAsync());
         }
 
-        // GET: UserSM/Details/5
+        // GET: Administrator/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace SmartPark.Controllers
                 return NotFound();
             }
 
-            var userSM = await _context.UserSMs
+            var administrator = await _context.Administrators
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userSM == null)
+            if (administrator == null)
             {
                 return NotFound();
             }
 
-            return View(userSM);
+            return View(administrator);
         }
 
-        // GET: UserSM/Create
+        // GET: Administrator/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: UserSM/Create
+        // POST: Administrator/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Phone")] UserSM userSM)
+        public async Task<IActionResult> Create([Bind("Id,AdminName")] Administrator administrator)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(userSM);
+                _context.Add(administrator);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(userSM);
+            return View(administrator);
         }
 
-        // GET: UserSM/Edit/5
+        // GET: Administrator/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace SmartPark.Controllers
                 return NotFound();
             }
 
-            var userSM = await _context.UserSMs.FindAsync(id);
-            if (userSM == null)
+            var administrator = await _context.Administrators.FindAsync(id);
+            if (administrator == null)
             {
                 return NotFound();
             }
-            return View(userSM);
+            return View(administrator);
         }
 
-        // POST: UserSM/Edit/5
+        // POST: Administrator/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Email,Phone")] UserSM userSM)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,AdminName")] Administrator administrator)
         {
-            if (id != userSM.Id)
+            if (id != administrator.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace SmartPark.Controllers
             {
                 try
                 {
-                    _context.Update(userSM);
+                    _context.Update(administrator);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserSMExists(userSM.Id))
+                    if (!AdministratorExists(administrator.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace SmartPark.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(userSM);
+            return View(administrator);
         }
 
-        // GET: UserSM/Delete/5
+        // GET: Administrator/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace SmartPark.Controllers
                 return NotFound();
             }
 
-            var userSM = await _context.UserSMs
+            var administrator = await _context.Administrators
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (userSM == null)
+            if (administrator == null)
             {
                 return NotFound();
             }
 
-            return View(userSM);
+            return View(administrator);
         }
 
-        // POST: UserSM/Delete/5
+        // POST: Administrator/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var userSM = await _context.UserSMs.FindAsync(id);
-            if (userSM != null)
+            var administrator = await _context.Administrators.FindAsync(id);
+            if (administrator != null)
             {
-                _context.UserSMs.Remove(userSM);
+                _context.Administrators.Remove(administrator);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserSMExists(int id)
+        private bool AdministratorExists(int id)
         {
-            return _context.UserSMs.Any(e => e.Id == id);
+            return _context.Administrators.Any(e => e.Id == id);
         }
     }
 }

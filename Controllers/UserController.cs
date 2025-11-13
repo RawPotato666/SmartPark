@@ -10,23 +10,22 @@ using SmartPark.Models;
 
 namespace SmartPark.Controllers
 {
-    public class ParkingSpotController : Controller
+    public class UserController : Controller
     {
         private readonly SmartParkContext _context;
 
-        public ParkingSpotController(SmartParkContext context)
+        public UserController(SmartParkContext context)
         {
             _context = context;
         }
 
-        // GET: ParkingSpot
+        // GET: User
         public async Task<IActionResult> Index()
         {
-            var smartParkContext = _context.ParkingSpots.Include(p => p.ParkingLot);
-            return View(await smartParkContext.ToListAsync());
+            return View(await _context.Users.ToListAsync());
         }
 
-        // GET: ParkingSpot/Details/5
+        // GET: User/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace SmartPark.Controllers
                 return NotFound();
             }
 
-            var parkingSpot = await _context.ParkingSpots
-                .Include(p => p.ParkingLot)
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (parkingSpot == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(parkingSpot);
+            return View(user);
         }
 
-        // GET: ParkingSpot/Create
+        // GET: User/Create
         public IActionResult Create()
         {
-            ViewData["ParkingLotId"] = new SelectList(_context.ParkingLots, "Id", "Id");
             return View();
         }
 
-        // POST: ParkingSpot/Create
+        // POST: User/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,IsDisabled,ParkingLotId")] ParkingSpot parkingSpot)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Username")] User user)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(parkingSpot);
+                _context.Add(user);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParkingLotId"] = new SelectList(_context.ParkingLots, "Id", "Id", parkingSpot.ParkingLotId);
-            return View(parkingSpot);
+            return View(user);
         }
 
-        // GET: ParkingSpot/Edit/5
+        // GET: User/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace SmartPark.Controllers
                 return NotFound();
             }
 
-            var parkingSpot = await _context.ParkingSpots.FindAsync(id);
-            if (parkingSpot == null)
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
-            ViewData["ParkingLotId"] = new SelectList(_context.ParkingLots, "Id", "Id", parkingSpot.ParkingLotId);
-            return View(parkingSpot);
+            return View(user);
         }
 
-        // POST: ParkingSpot/Edit/5
+        // POST: User/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,IsDisabled,ParkingLotId")] ParkingSpot parkingSpot)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,FirstName,LastName,Username")] User user)
         {
-            if (id != parkingSpot.Id)
+            if (id != user.Id)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace SmartPark.Controllers
             {
                 try
                 {
-                    _context.Update(parkingSpot);
+                    _context.Update(user);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ParkingSpotExists(parkingSpot.Id))
+                    if (!UserExists(user.Id))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace SmartPark.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParkingLotId"] = new SelectList(_context.ParkingLots, "Id", "Id", parkingSpot.ParkingLotId);
-            return View(parkingSpot);
+            return View(user);
         }
 
-        // GET: ParkingSpot/Delete/5
+        // GET: User/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,35 +124,34 @@ namespace SmartPark.Controllers
                 return NotFound();
             }
 
-            var parkingSpot = await _context.ParkingSpots
-                .Include(p => p.ParkingLot)
+            var user = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (parkingSpot == null)
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return View(parkingSpot);
+            return View(user);
         }
 
-        // POST: ParkingSpot/Delete/5
+        // POST: User/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var parkingSpot = await _context.ParkingSpots.FindAsync(id);
-            if (parkingSpot != null)
+            var user = await _context.Users.FindAsync(id);
+            if (user != null)
             {
-                _context.ParkingSpots.Remove(parkingSpot);
+                _context.Users.Remove(user);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ParkingSpotExists(int id)
+        private bool UserExists(int id)
         {
-            return _context.ParkingSpots.Any(e => e.Id == id);
+            return _context.Users.Any(e => e.Id == id);
         }
     }
 }

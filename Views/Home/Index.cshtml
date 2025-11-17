@@ -1,27 +1,99 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model List<SmartPark.Models.ParkingSpot>
+
+@{
+    ViewData["Title"] = "Parking Lot";
 }
 
-<div class="jumbotron">
-    <h1>Contoso University</h1>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <h2>Welcome to Contoso University</h2>
-        <p>
-            Contoso University is a sample application that
-            demonstrates how to use Entity Framework Core in an
-            ASP.NET Core MVC web application.
-        </p>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1>Parking Lot Overview</h1>
+            <p class="text-muted">Manage and view all parking spaces in the lot</p>
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Build it from scratch</h2>
-        <p>You can build the application by following the steps in a series of tutorials.</p>
-        <p><a class="btn btn-default" href="https://docs.asp.net/en/latest/data/ef-mvc/intro.html">See the tutorial &raquo;</a></p>
+
+    <div class="parking-lot-container">
+        @if (Model != null && Model.Count > 0)
+        {
+            // Group parking spots into rows of 8
+            var rows = Model
+                .OrderBy(x => x.Id)
+                .Select((spot, index) => new { spot, index })
+                .GroupBy(x => x.index / 8)
+                .ToList();
+
+            @foreach (var row in rows)
+            {
+                <div class="parking-row">
+                    @foreach (var item in row)
+                    {
+                        var spot = item.spot;
+                        var colorClass = spot.IsDisabled ? "spot-disabled" : "spot-available";
+
+                        <a href="@Url.Action("Details", "ParkingSpot", new { id = spot.Id })" class="parking-space-link">
+                            <div class="parking-space @colorClass" title="P@spot.Id - @(spot.IsDisabled ? "Disabled" : "Available")">
+                                <span class="spot-id">P@spot.Id</span>
+                            </div>
+                        </a>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info" role="alert">
+                <strong>No parking spaces available.</strong> The parking lot is empty or not yet configured.
+            </div>
+        }
     </div>
-    <div class="col-md-4">
-        <h2>Download it</h2>
-        <p>You can download the completed project from GitHub.</p>
-        <p><a class="btn btn-default" href="https://github.com/dotnet/AspNetCore.Docs/tree/main/aspnetcore/data/ef-mvc/intro/samples/cu-final">See project source code &raquo;</a></p>
+
+    <div class="row mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Legend</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="parking-space spot-available d-inline-block me-2" style="width: 60px; height: 60px;">
+                            <span class="spot-id">P1</span>
+                        </div>
+                        <span class="align-middle">Available Spot</span>
+                    </div>
+                    <div>
+                        <div class="parking-space spot-disabled d-inline-block me-2" style="width: 60px; height: 60px;">
+                            <span class="spot-id">P2</span>
+                        </div>
+                        <span class="align-middle">Disabled Spot</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model != null)
+        {
+            var availableCount = Model.Count(x => !x.IsDisabled);
+            var disabledCount = Model.Count(x => x.IsDisabled);
+
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Statistics</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-6 text-center">
+                                <h3 class="text-primary">@availableCount</h3>
+                                <p class="text-muted">Available Spaces</p>
+                            </div>
+                            <div class="col-6 text-center">
+                                <h3 class="text-danger">@disabledCount</h3>
+                                <p class="text-muted">Disabled Spaces</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 </div>

@@ -45,6 +45,18 @@ namespace SmartPark.Controllers
             return View(parkingSpot);
         }
 
+        // Check if a parking spot is occupied
+        public async Task<bool> IsOccupied(int spotId)
+        {
+            var now = DateTime.Now;
+
+            return await _context.Reservations
+                .AnyAsync(r =>
+                    r.ParkingSpot.Id == spotId &&
+                    r.Start <= now &&
+                    r.End >= now);
+        }
+
         // GET: ParkingSpot/Create
         public IActionResult Create()
         {

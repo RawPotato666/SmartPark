@@ -22,7 +22,11 @@ namespace SmartPark.Data
             {
                 new User { FirstName = "Janez", LastName = "Novak", Username = "janez.novak" },
                 new User { FirstName = "Ana", LastName= "Kovač", Username = "ana.kovac" },
-                new User { FirstName = "Miha", LastName = "Horvat", Username = "miha.horvat" }
+                new User { FirstName = "Miha", LastName = "Horvat", Username = "miha.horvat" },
+                new User { FirstName = "Sara", LastName = "Zupan", Username = "sara.zupan" },
+                new User { FirstName = "Luka", LastName = "Mali", Username = "luka.mali" },
+                new User { FirstName = "Maja", LastName = "Breznik", Username = "maja.breznik" },
+                new User { FirstName = "Marko", LastName = "Kralj", Username = "marko.kralj" }
             };
             context.Users.AddRange(users);
             context.SaveChanges();
@@ -47,9 +51,37 @@ namespace SmartPark.Data
             // --- SEED PARKIRNA MESTA (Parking spots) ---
             var parkingSpots = new ParkingSpot[]
             {
+                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[0].Id },
                 new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = true , ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id }
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
+                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
+
             };
             context.ParkingSpots.AddRange(parkingSpots);
             context.SaveChanges();

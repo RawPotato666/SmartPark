@@ -20,7 +20,7 @@ namespace SmartPark.Controllers
         }
 
         // GET: ParkingSpot
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() // tle notr das kako deluje
         {
             var smartParkContext = _context.ParkingSpots.Include(p => p.ParkingLot);
             return View(await smartParkContext.ToListAsync());

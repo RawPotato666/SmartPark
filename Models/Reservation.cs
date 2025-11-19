@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 public class Reservation
 {
     public int Id { get; set; }
-    public int UserId { get; set; }
+    public string UserId { get; set; } = null!;
     public int ParkingSpotId { get; set; }
 
     [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]

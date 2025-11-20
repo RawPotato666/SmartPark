@@ -23,18 +23,16 @@ public class HomeController : Controller
         return View(lots);
     }
 
-    public IActionResult ParkingSpots(int lotId) // prikaze parking spots za izbran parking lot, naprej logiko nared (hopefully nardi kar hocm)
+    public IActionResult ParkingSpots(int lotId)
     {
         var lot = _context.ParkingLots
                     .Include(l => l.ParkingSpots)
                     .FirstOrDefault(l => l.Id == lotId);
 
         if (lot == null)
-        {
             return NotFound();
-        }
 
-        return View(lot); // Pass the lot along with its spots to the view
+        return View(lot);
     }
 
     public IActionResult Privacy()

@@ -20,7 +20,7 @@ namespace SmartPark.Controllers
         }
 
         // GET: ParkingSpot
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index() // tle notr das kako deluje
         {
             var smartParkContext = _context.ParkingSpots.Include(p => p.ParkingLot);
             return View(await smartParkContext.ToListAsync());
@@ -43,6 +43,18 @@ namespace SmartPark.Controllers
             }
 
             return View(parkingSpot);
+        }
+
+        // Check if a parking spot is occupied
+        public async Task<bool> IsOccupied(int spotId)
+        {
+            var now = DateTime.Now;
+
+            return await _context.Reservations
+                .AnyAsync(r =>
+                    r.ParkingSpot.Id == spotId &&
+                    r.Start <= now &&
+                    r.End >= now);
         }
 
         // GET: ParkingSpot/Create

@@ -1,8 +1,12 @@
 namespace SmartPark.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 public class ParkingLot
 {
     public int Id { get; set; }
+
+    [StringLength(50)]
     public string Location { get; set; } = null!;           
     public int Capacity { get; set; }          
     public int DisabledSpots { get; set; }      

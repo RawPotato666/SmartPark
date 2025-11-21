@@ -315,24 +315,25 @@ textarea:focus {
   margin-bottom: 2rem;
 }
 
+/* Parking spot unavailable instead disabled*/
 .parking-space.spot-available.d-inline-block.me-2:hover,
 .parking-space.spot-available.d-inline-block.me-2:focus,
 .parking-space.spot-available.d-inline-block.me-2:focus-visible {
   transform: none !important;
   box-shadow: none !important;
-  border-color: var(--color-primary-blue) !important; /* keep same as .spot-disabled */
+  border-color: var(--color-primary-blue) !important; /* keep same as .spot-unavailable */
   cursor: default;
   transition: none !important;
   outline: none !important;
   outline-offset: 0 !important;
 }
 
-.parking-space.spot-disabled.d-inline-block.me-2:hover,
-.parking-space.spot-disabled.d-inline-block.me-2:focus,
-.parking-space.spot-disabled.d-inline-block.me-2:focus-visible {
+.parking-space.spot-unavailable.d-inline-block.me-2:hover,
+.parking-space.spot-unavailable.d-inline-block.me-2:focus,
+.parking-space.spot-unavailable.d-inline-block.me-2:focus-visible {
   transform: none !important;
   box-shadow: none !important;
-  border-color: var(--color-accent-pink) !important; /* keep same as .spot-disabled */
+  border-color: var(--color-accent-pink) !important; /* keep same as .spot-unavailable */
   cursor: default;
   transition: none !important;
   outline: none !important;
@@ -585,7 +586,8 @@ footer a:hover {
   border-color: var(--color-primary-blue);
 }
 
-.spot-disabled {
+/*Parking spot unavailable instead disabled*/
+.spot-unavailable {
   background: linear-gradient(135deg, var(--color-accent-pink) 0%, #ff69b4 100%);
   color: var(--color-white);
   border-color: var(--color-accent-pink);

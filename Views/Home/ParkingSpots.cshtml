@@ -50,7 +50,7 @@
                            class="parking-space-link">
 
                             <div class="parking-space @colorClass"
-                                 title="P@spot.Id - @(spot.IsDisabled ? "Disabled" : "Available")">
+                                 title="@spot.Id - @(spot.IsDisabled ? "Disabled" : "Enabled")">
 
                                 @if(spot.IsDisabled) {
                                     <span class="spot-id">&#9855 @spot.Id</span>

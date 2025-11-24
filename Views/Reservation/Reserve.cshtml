@@ -33,8 +33,47 @@
         <button type="submit" class="btn btn-primary">Confirm Reservation</button>
     </form>
 
+        <div class="modal fade" id="errorModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-warning">
+        <div class="modal-header">
+            <h5 class="modal-title">Reservation Warning</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="errorMessage">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-dark" data-bs-dismiss="modal">OK</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
     <div>
     <a asp-action="MyReservations">To my reservations</a>
     </div>
+
+    @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            @if (!ViewData.ModelState.IsValid)
+            {
+                var error = ViewData.ModelState.Values.SelectMany(v => v.Errors)
+                                                      .FirstOrDefault()?.ErrorMessage;
+
+                if (!string.IsNullOrEmpty(error))
+                {
+                    <text>
+                        document.getElementById("errorMessage").innerText = "@error";
+                        var modal = new bootstrap.Modal(document.getElementById("errorModal"));
+                        modal.show();
+                    </text>
+                }
+            }
+
+        });
+    </script>
+    }
 
 </div>

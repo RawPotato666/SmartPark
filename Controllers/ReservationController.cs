@@ -52,6 +52,7 @@ namespace SmartPark.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Login", "Account");
 
@@ -66,6 +67,19 @@ namespace SmartPark.Controllers
             if (reservation.Start < DateTime.Now)
             {
                 ModelState.AddModelError("", "Start time cannot be in the past.");
+                return View(reservation);
+            }
+
+            // Check for overlapping reservations for same parking spot
+            bool conflict = _context.Reservations.Any(r =>
+                r.ParkingSpotId == reservation.ParkingSpotId &&
+                reservation.Start < r.End &&
+                reservation.End > r.Start
+            );
+
+            if (conflict)
+            {
+                ModelState.AddModelError("", "This parking spot is already reserved for that time.");
                 return View(reservation);
             }
 

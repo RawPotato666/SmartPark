@@ -1,99 +1,20 @@
-﻿@model List<SmartPark.Models.ParkingSpot>
+﻿@model List<SmartPark.Models.ParkingLot>
 
 @{
-    ViewData["Title"] = "Parking Lot";
+    ViewData["Title"] = "Parking Lots";
 }
 
 <div class="container mt-5">
-    <div class="row mb-4">
-        <div class="col-md-12">
-            <h1>Parking Lot Overview</h1>
-            <p class="text-muted">Manage and view all parking spaces in the lot</p>
-        </div>
-    </div>
+    <h1>Parking Lots</h1>
+    <p class="text-muted">Click a parking lot to view its parking spots.</p>
 
-    <div class="parking-lot-container">
-        @if (Model != null && Model.Count > 0)
+    <div class="list-group mt-4">
+        @foreach (var lot in Model)
         {
-            // Group parking spots into rows of 8
-            var rows = Model
-                .OrderBy(x => x.Id)
-                .Select((spot, index) => new { spot, index })
-                .GroupBy(x => x.index / 8)
-                .ToList();
-
-            @foreach (var row in rows)
-            {
-                <div class="parking-row">
-                    @foreach (var item in row)
-                    {
-                        var spot = item.spot;
-                        var colorClass = spot.IsDisabled ? "spot-disabled" : "spot-available";
-
-                        <a href="@Url.Action("Details", "ParkingSpot", new { id = spot.Id })" class="parking-space-link">
-                            <div class="parking-space @colorClass" title="P@spot.Id - @(spot.IsDisabled ? "Disabled" : "Available")">
-                                <span class="spot-id">P@spot.Id</span>
-                            </div>
-                        </a>
-                    }
-                </div>
-            }
-        }
-        else
-        {
-            <div class="alert alert-info" role="alert">
-                <strong>No parking spaces available.</strong> The parking lot is empty or not yet configured.
-            </div>
-        }
-    </div>
-
-    <div class="row mt-5">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-0">Legend</h5>
-                </div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <div class="parking-space spot-available d-inline-block me-2" style="width: 60px; height: 60px;">
-                            <span class="spot-id">P1</span>
-                        </div>
-                        <span class="align-middle">Available Spot</span>
-                    </div>
-                    <div>
-                        <div class="parking-space spot-disabled d-inline-block me-2" style="width: 60px; height: 60px;">
-                            <span class="spot-id">P2</span>
-                        </div>
-                        <span class="align-middle">Disabled Spot</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        @if (Model != null)
-        {
-            var availableCount = Model.Count(x => !x.IsDisabled);
-            var disabledCount = Model.Count(x => x.IsDisabled);
-
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">Statistics</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6 text-center">
-                                <h3 class="text-primary">@availableCount</h3>
-                                <p class="text-muted">Available Spaces</p>
-                            </div>
-                            <div class="col-6 text-center">
-                                <h3 class="text-danger">@disabledCount</h3>
-                                <p class="text-muted">Disabled Spaces</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <a class="list-group-item list-group-item-action"
+               href="@Url.Action("ParkingSpots", "Home", new { lotId = lot.Id })">
+                <strong>@lot.Location</strong> (ID: @lot.Id)
+            </a>
         }
     </div>
 </div>

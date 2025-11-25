@@ -1,0 +1,96 @@
+@using System.Diagnostics.Metrics
+@model SmartPark.Models.ParkingLot
+
+@{
+    ViewData["Title"] = "Parking Spots";
+}
+
+<div class="container mt-5">
+    <h1>@Model.Location</h1>
+    <p class="text-muted">Viewing all parking spots for this parking lot.</p>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary mb-4">← Back to Parking Lots</a>
+
+    <form method="get" asp-action="ParkingSpotsFilter" asp-controller="Home">
+        <input type="hidden" name="lotId" value="@Model.Id" />
+
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <label>Select Date & Time:</label>
+                <input type="datetime-local"
+                       name="selectedDateTime"
+                       class="form-control"
+                       value="@ViewBag.SelectedDateTime" required />
+        </div>
+
+        <div class="col-md-4">
+        <label>Select End Date & Time:</label>
+        <input type="datetime-local"
+               name="selectedEndTime"
+               class="form-control"
+               value="@ViewBag.SelectedEndTime"
+               required />
+        </div>
+
+            <div class="col-md-2 align-self-end">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="parking-lot-container">
+        @if (Model.ParkingSpots != null && Model.ParkingSpots.Count > 0)
+        {
+            var rows = Model.ParkingSpots
+                .OrderBy(x => x.Id)
+                .Select((spot, index) => new { spot, index })
+                .GroupBy(x => x.index / 8)
+                .ToList();
+                
+            
+            int counter = 0;
+            
+            @foreach (var row in rows)
+            {
+                <div class="parking-row">
+                    @foreach (var item in row)
+                    {
+                        counter++;
+                        var spot = item.spot;
+                        //Parking spot unavailable instead disabled
+                        var colorClass = spot.IsOccupied ? "spot-unavailable" : "spot-available";
+                        
+                        <a href="@Url.Action("Reserve", "Reservation",
+                                new {
+                                    Id = spot.Id,
+                                    start = ViewBag.SelectedDateTime,
+                                    end = ViewBag.SelectedEndTime   // Only if you have an End time
+                                })"
+                        class="parking-space-link">
+
+
+                            <div class="parking-space @colorClass"
+                                 title="P - @counter - @(spot.IsOccupied ? "Occupied" : "Enabled")">
+
+                                @if(spot.IsDisabled) {
+                                    <span class="spot-id">&#9855 P - @counter</span>
+                                }
+                                else {
+                                    <span class="spot-id">P - @counter</span>
+                                }
+                                
+                            </div>
+
+                        </a>
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-info">
+                No parking spots found for this lot.
+            </div>
+        }
+    </div>
+</div>

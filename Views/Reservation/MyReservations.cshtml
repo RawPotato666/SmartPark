@@ -1,0 +1,52 @@
+@model IEnumerable<SmartPark.Models.Reservation>
+
+@{
+    ViewData["Title"] = "My Reservations";
+}
+
+<div class="container mt-5">
+    <h2>My Reservations</h2>
+    <hr />
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">
+            You have no reservations yet.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered mt-3">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Parking Lot</th>
+                        <th>Spot</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var reservation in Model)
+                    {
+                        <tr>
+                            <td>@(reservation.ParkingSpot?.ParkingLot?.Location ?? "Unknown")</td>
+                            <td>@(reservation.ParkingSpot != null ? reservation.ParkingSpot.Id.ToString() : "N/A")</td>
+                            <td>@reservation.Start.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>@reservation.End.ToString("yyyy-MM-dd HH:mm")</td>
+                            <td>
+                                <a asp-controller="Reservation"
+                                   asp-action="Cancel"
+                                   asp-route-id="@reservation.Id"
+                                   class="btn btn-danger btn-sm">
+                                    Cancel
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

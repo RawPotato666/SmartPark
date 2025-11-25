@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SmartPark.Models;
 using SmartPark.Data;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartPark.Controllers;
 
@@ -19,8 +20,41 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var parkingSpots = _context.ParkingSpots.ToList();
-        return View(parkingSpots);
+        var lots = _context.ParkingLots.ToList();
+        return View(lots);
+    }
+
+    public IActionResult ParkingSpots(int lotId, DateTime selectedDateTime)
+    {
+        var lot = _context.ParkingLots
+                    .Include(l => l.ParkingSpots)
+                    .FirstOrDefault(l => l.Id == lotId);
+
+        if (lot == null)
+            return NotFound();
+
+        return View(lot);
+    }
+
+    public IActionResult ParkingSpotsFilter(int lotId, DateTime selectedDateTime, DateTime selectedEndTime)
+    {
+        var lot = _context.ParkingLots
+        .Include(p => p.ParkingSpots)
+        .FirstOrDefault(x => x.Id == lotId);
+
+        foreach (var spot in lot.ParkingSpots)
+        {
+            spot.IsOccupied = _context.Reservations
+                .Any(r => r.ParkingSpotId == spot.Id &&
+                    selectedDateTime >= r.Start &&
+                    selectedDateTime <= r.End
+                    );
+        }
+
+    ViewBag.SelectedDateTime = selectedDateTime;
+    ViewBag.SelectedEndTime = selectedEndTime; 
+
+    return View("ParkingSpots", lot);
     }
 
     public IActionResult Privacy()

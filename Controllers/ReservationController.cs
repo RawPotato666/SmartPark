@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SmartPark.Data;
 using SmartPark.Models;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace SmartPark.Controllers
 {
@@ -24,6 +26,113 @@ namespace SmartPark.Controllers
         {
             var smartParkContext = _context.Reservations.Include(r => r.ParkingSpot).Include(r => r.User);
             return View(await smartParkContext.ToListAsync());
+        }
+
+        [Authorize]
+        public IActionResult Reserve(int Id, DateTime? start, DateTime? end)
+        {
+            var spot = _context.ParkingSpots.FirstOrDefault(x => x.Id == Id);
+            if (spot == null) return NotFound();
+
+            var reservation = new Reservation
+            {
+                ParkingSpotId = Id,
+                Start = start ?? DateTime.Now,
+                End = end ?? DateTime.Now.AddHours(1)
+            };
+
+            return View(reservation);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public IActionResult Reserve([Bind("UserId,ParkingSpotId,Start,End")] Reservation reservation)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            
+            if (string.IsNullOrEmpty(userId))
+                return RedirectToAction("Login", "Account");
+
+            reservation.UserId = userId;
+
+            if (reservation.Start >= reservation.End)
+            {
+                ModelState.AddModelError("", "End time must be after start time.");
+                return View(reservation);
+            }
+
+            if (reservation.Start < DateTime.Now)
+            {
+                ModelState.AddModelError("", "Start time cannot be in the past.");
+                return View(reservation);
+            }
+
+            // Check for overlapping reservations for same parking spot
+            bool conflict = _context.Reservations.Any(r =>
+                r.ParkingSpotId == reservation.ParkingSpotId &&
+                reservation.Start < r.End &&
+                reservation.End > r.Start
+            );
+
+            if (conflict)
+            {
+                ModelState.AddModelError("", "This parking spot is already reserved for that time.");
+                return View(reservation);
+            }
+
+
+            _context.Reservations.Add(reservation);
+            _context.SaveChanges();
+
+            return RedirectToAction("MyReservations", reservation);
+        }
+
+        [Authorize]
+        public IActionResult MyReservations()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            var reservations = _context.Reservations
+                            .Include(r => r.ParkingSpot)
+                                .ThenInclude(s => s.ParkingLot)
+                            .Where(r => r.UserId == userId)
+                            .OrderByDescending(r => r.Start)
+                            .ToList();
+
+            return View(reservations);
+        }
+
+        public IActionResult Cancel(int id)
+        {
+            var reservation = _context.Reservations
+                .FirstOrDefault(r => r.Id == id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            return View(reservation);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmCancel(int id)
+        {
+            var reservation = _context.Reservations.FirstOrDefault(r => r.Id == id);
+
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            _context.Reservations.Remove(reservation);
+            _context.SaveChanges();
+
+            return RedirectToAction("MyReservations");
         }
 
         // GET: Reservation/Details/5

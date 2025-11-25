@@ -1,0 +1,19 @@
+@model SmartPark.Models.Reservation
+
+@{
+    ViewData["Title"] = "Cancel Reservation";
+}
+
+<div class="container mt-5">
+    <h2>Cancel Reservation</h2>
+    <hr />
+
+    <div class="alert alert-warning">
+        Are you sure you want to cancel this reservation?
+    </div>
+
+    <form method="post" asp-action="ConfirmCancel" asp-route-id="@Model.Id">
+        <button type="submit" class="btn btn-danger">Confirm Cancel</button>
+        <a asp-action="MyReservations" class="btn btn-secondary">Back</a>
+    </form>
+</div>

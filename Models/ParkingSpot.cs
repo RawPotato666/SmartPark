@@ -5,6 +5,7 @@ public class ParkingSpot
     public bool IsDisabled { get; set; }        // Invalidno
     public int ParkingLotId { get; set; }
     public bool IsOccupied { get; set; }       // Zauzeto
+    public int DisplayId { get; set; }
 
     // Relationships
     public ParkingLot ParkingLot { get; set; } = null!; // Which lot it belongs to

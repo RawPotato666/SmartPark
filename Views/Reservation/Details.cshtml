@@ -32,7 +32,7 @@
             @Html.DisplayNameFor(model => model.ParkingSpot)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ParkingSpot.Id)
+            @Html.DisplayFor(model => model.ParkingSpot.ParkingLot.Location), @Html.DisplayFor(model => model.ParkingSpot.DisplayId)
         </dd>
     </dl>
 </div>

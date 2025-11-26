@@ -4,9 +4,13 @@
     ViewData["Title"] = "Reserve Parking Spot";
 }
 
+@{
+    var displayId = Model.ParkingSpot?.DisplayId ?? (ViewBag.ParkingSpotDisplayId as int?) ?? 666;
+}
+
 <div class="container mt-4">
 
-    <h2>Reserve Parking Spot @Model.ParkingSpotId</h2>
+    <h2>Reserve Parking Spot @displayId</h2>
 
     <form asp-action="Reserve" method="post">
         @Html.AntiForgeryToken()

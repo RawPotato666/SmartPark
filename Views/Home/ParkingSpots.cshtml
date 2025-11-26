@@ -9,8 +9,6 @@
     <h1>@Model.Location</h1>
     <p class="text-muted">Viewing all parking spots for this parking lot.</p>
 
-
-
     <form method="get" asp-action="ParkingSpotsFilter" asp-controller="Home">
         <input type="hidden" name="lotId" value="@Model.Id" />
 
@@ -46,10 +44,10 @@
                 .Select((spot, index) => new { spot, index })
                 .GroupBy(x => x.index / 8)
                 .ToList();
-                
-            
+
+
             int counter = 0;
-            
+
             @foreach (var row in rows)
             {
                 <div class="parking-row">
@@ -59,26 +57,26 @@
                         var spot = item.spot;
                         //Parking spot unavailable instead disabled
                         var colorClass = spot.IsOccupied ? "spot-unavailable" : "spot-available";
-                        
+
                         <a href="@Url.Action("Reserve", "Reservation",
                                 new {
                                     Id = spot.Id,
                                     start = ViewBag.SelectedDateTime,
-                                    end = ViewBag.SelectedEndTime   // Only if you have an End time
+                                    end = ViewBag.SelectedEndTime
                                 })"
                         class="parking-space-link">
 
 
                             <div class="parking-space @colorClass"
-                                 title="P - @counter - @(spot.IsOccupied ? "Occupied" : "Enabled")">
+                                 title="P - @spot.DisplayId - @(spot.IsOccupied ? "Occupied" : "Enabled")">
 
                                 @if(spot.IsDisabled) {
-                                    <span class="spot-id">&#9855 P - @counter</span>
+                                    <span class="spot-id">&#9855 P - @spot.DisplayId</span>
                                 }
                                 else {
-                                    <span class="spot-id">P - @counter</span>
+                                    <span class="spot-id">P - @spot.DisplayId</span>
                                 }
-                                
+
                             </div>
 
                         </a>
@@ -94,4 +92,3 @@
         }
     </div>
 </div>
-

@@ -24,7 +24,10 @@ namespace SmartPark.Controllers
         // GET: Reservation
         public async Task<IActionResult> Index()
         {
-            var smartParkContext = _context.Reservations.Include(r => r.ParkingSpot).Include(r => r.User);
+            var smartParkContext = _context.Reservations
+                .Include(r => r.ParkingSpot)
+                .ThenInclude(ps => ps.ParkingLot)
+                .Include(r => r.User);
             return View(await smartParkContext.ToListAsync());
         }
 
@@ -38,8 +41,11 @@ namespace SmartPark.Controllers
             {
                 ParkingSpotId = Id,
                 Start = start ?? DateTime.Now,
-                End = end ?? DateTime.Now.AddHours(1)
+                End = end ?? DateTime.Now.AddHours(1),
+                ParkingSpot = spot
             };
+
+            ViewBag.ParkingSpotDisplayId = spot.DisplayId;
 
             return View(reservation);
 
@@ -52,6 +58,15 @@ namespace SmartPark.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
+            void PopulateSpotDisplay()
+            {
+                var spot = _context.ParkingSpots.FirstOrDefault(x => x.Id == reservation.ParkingSpotId);
+                if (spot != null)
+                {
+                    reservation.ParkingSpot = spot;
+                    ViewBag.ParkingSpotDisplayId = spot.DisplayId;
+                }
+            }
             
             if (string.IsNullOrEmpty(userId))
                 return RedirectToAction("Login", "Account");
@@ -61,12 +76,14 @@ namespace SmartPark.Controllers
             if (reservation.Start >= reservation.End)
             {
                 ModelState.AddModelError("", "End time must be after start time.");
+                PopulateSpotDisplay();
                 return View(reservation);
             }
 
             if (reservation.Start < DateTime.Now)
             {
                 ModelState.AddModelError("", "Start time cannot be in the past.");
+                PopulateSpotDisplay();
                 return View(reservation);
             }
 
@@ -80,6 +97,7 @@ namespace SmartPark.Controllers
             if (conflict)
             {
                 ModelState.AddModelError("", "This parking spot is already reserved for that time.");
+                PopulateSpotDisplay();
                 return View(reservation);
             }
 
@@ -145,6 +163,7 @@ namespace SmartPark.Controllers
 
             var reservation = await _context.Reservations
                 .Include(r => r.ParkingSpot)
+                .ThenInclude(ps => ps.ParkingLot)
                 .Include(r => r.User)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reservation == null)

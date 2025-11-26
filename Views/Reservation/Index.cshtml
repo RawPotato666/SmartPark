@@ -22,6 +22,9 @@
                 @Html.DisplayNameFor(model => model.User)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.ParkingSpot.ParkingLot)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.ParkingSpot)
             </th>
             <th></th>
@@ -40,7 +43,10 @@
                 @Html.DisplayFor(modelItem => item.User.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ParkingSpot.Id)
+                @Html.DisplayFor(modelItem => item.ParkingSpot.ParkingLot.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ParkingSpot.DisplayId)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

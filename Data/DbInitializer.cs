@@ -44,40 +44,22 @@ namespace SmartPark.Data
             context.SaveChanges();
 
             // --- SEED PARKIRNA MESTA (Parking spots) ---
-            var parkingSpots = new ParkingSpot[]
+            ParkingSpot[] parkingSpots;
+            var generatedSpots = new System.Collections.Generic.List<ParkingSpot>();
+            foreach (var lot in parkingL)
             {
-                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[0].Id },
-                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = true, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-                new ParkingSpot { IsDisabled = false, ParkingLotId = parkingL[1].Id },
-
-            };
+                for (int i = 1; i <= lot.Capacity; i++)
+                {
+                    generatedSpots.Add(new ParkingSpot
+                    {
+                        ParkingLotId = lot.Id,
+                        DisplayId = i, // per-lot display number
+                        IsDisabled = i <= lot.DisabledSpots,
+                        IsOccupied = false
+                    });
+                }
+            }
+            parkingSpots = generatedSpots.ToArray();
             context.ParkingSpots.AddRange(parkingSpots);
             context.SaveChanges();
 

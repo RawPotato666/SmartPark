@@ -8,10 +8,10 @@
     <h1>Parking Lots</h1>
     <p class="text-muted">Click a parking lot to view its parking spots.</p>
 
-    <div class="list-group mt-4">
+    <div class="home-parking-list">
         @foreach (var lot in Model)
         {
-            <a class="list-group-item list-group-item-action"
+            <a class="list-group-item list-group-item-action home-parking-list-item"
                href="@Url.Action("ParkingSpots", "Home", new { lotId = lot.Id })">
                 <strong>@lot.Location</strong> (ID: @lot.Id)
             </a>

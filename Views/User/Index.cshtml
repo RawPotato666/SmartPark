@@ -9,7 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-bordered mt-3">
     <thead>
         <tr>
             <th>
@@ -21,43 +21,43 @@
             <th>
                 @Html.DisplayNameFor(model => model.UserName)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.NormalizedUserName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.NormalizedEmail)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.EmailConfirmed)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.PasswordHash)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.SecurityStamp)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.ConcurrencyStamp)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PhoneNumber)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.PhoneNumberConfirmed)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TwoFactorEnabled)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.LockoutEnd)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.LockoutEnabled)
             </th>
-            <th>
+            <th style="display:none">
                 @Html.DisplayNameFor(model => model.AccessFailedCount)
             </th>
             <th></th>
@@ -75,43 +75,43 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UserName)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.NormalizedUserName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.NormalizedEmail)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.EmailConfirmed)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.PasswordHash)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.SecurityStamp)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.ConcurrencyStamp)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.PhoneNumberConfirmed)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TwoFactorEnabled)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.LockoutEnd)
             </td>
-            <td>
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.LockoutEnabled)
-            </td>
-            <td>
+            </td style="display:none">
+            <td style="display:none">
                 @Html.DisplayFor(modelItem => item.AccessFailedCount)
             </td>
             <td>

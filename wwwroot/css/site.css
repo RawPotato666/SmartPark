@@ -15,12 +15,21 @@
   --color-muted-text: #9ca3af;
 }
 
+html, body {
+    height: 100%;
+}
+
+main {
+    flex: 1 0 auto; /* Grow to take available space */
+}
+
+
 /* ===== Base Styles ===== */
 html {
+  background: var(--color-black);
   font-size: 14px;
   position: relative;
   min-height: 100%;
-  background-color: var(--color-black);
   color: var(--color-light-text);
 }
 
@@ -31,8 +40,10 @@ html {
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 60px;
-  background: linear-gradient(135deg, var(--color-black) 0%, var(--color-charcoal) 100%);
+  background: var(--color-black);
   color: var(--color-light-text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
@@ -87,6 +98,10 @@ nav {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+nav, nav * {
+  color: var(--color-white);
+}
+
 nav a {
   color: var(--color-light-text) !important;
   transition: all 0.3s ease;
@@ -117,7 +132,7 @@ nav a.active {
 }
 
 .navbar-nav .nav-link:hover {
-  background-color: var(--color-dark-grey);
+  color: var(--color-accent-pink) !important;
 }
 
 /* ===== Buttons ===== */
@@ -221,6 +236,24 @@ textarea:focus {
   margin-bottom: 0.5rem;
 }
 
+.home-parking-list {
+  color: var(--color-light-text);
+}
+
+.home-parking-list-item {
+  background-color: var(--color-charcoal) !important;
+  margin: 5px !important;
+  border: 2px solid var(--color-grey) !important;
+  border-radius: 0.75rem !important;
+  color: var(--color-light-text) !important;
+  transition: all 0.3s ease;
+}
+
+.home-parking-list-item:hover {
+    background-color: var(--color-dark-grey) !important;
+  border-color: var(--color-primary-blue) !important;
+}
+
 /* ===== Cards ===== */
 .card {
   background-color: var(--color-charcoal);
@@ -251,29 +284,29 @@ textarea:focus {
 
 /* ===== Tables ===== */
 .table {
-  color: var(--color-light-text);
-  border-color: var(--color-grey);
+  color: var(--color-light-text) !important;
+  border-color: var(--color-grey) !important;
 }
 
 .table thead {
-  background-color: var(--color-dark-blue);
-  color: var(--color-white);
-  border-color: var(--color-primary-blue);
+  background-color: var(--color-dark-blue) !important;
+  color: var(--color-white) !important;
+  border-color: var(--color-primary-blue) !important;
 }
 
 .table tbody tr {
-  border-color: var(--color-grey);
-  transition: all 0.3s ease;
+  border-color: var(--color-grey) !important;
+  transition: all 0.3s ease !important;
 }
 
 .table tbody tr:hover {
-  background-color: var(--color-dark-grey);
-  border-color: var(--color-primary-blue);
+  background-color: var(--color-dark-grey) !important;
+  border-color: var(--color-primary-blue) !important;
 }
 
 .table td, .table th {
-  padding: 0.75rem;
-  vertical-align: middle;
+  padding: 0.75rem !important;
+  vertical-align: middle !important;
 }
 
 /* ===== Alerts ===== */
@@ -434,15 +467,27 @@ textarea:focus {
   filter: invert(1);
 }
 
+body > .container {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
 /* ===== Footer ===== */
 footer {
+  flex-shrink: 0;
   background: linear-gradient(90deg, var(--color-charcoal) 0%, var(--color-dark-blue) 100%);
   border-top: 2px solid var(--color-primary-blue);
   color: var(--color-light-text);
   padding: 2rem 0;
-  margin-top: 3rem;
   min-height: 60px;
   position: relative;
+  margin-bottom: 0px !important;
+  align-items: center;
+}
+
+footer .container{
+  text-align: center;
 }
 
 footer a {
@@ -539,6 +584,7 @@ footer a:hover {
 .parking-space-link {
   text-decoration: none;
   display: block;
+  max-width: 136px;
 }
 
 /* ===== Parking Lot Visualization ===== */
@@ -553,9 +599,13 @@ footer a:hover {
 
 .parking-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  grid-auto-flow: row; /* Ensure items flow in rows */
+  grid-template-columns: repeat(auto-fit, 136px); /* Set fixed column width */
   gap: 1rem;
   margin-bottom: 1.5rem;
+  align-items: flex-start;
+  justify-content: start; /* Align items to the left */
+  max-width: var(--num-elements, 1) * 136px
 }
 
 .parking-space {
@@ -572,6 +622,7 @@ footer a:hover {
   font-size: 0.875rem;
   position: relative;
   min-height: 80px;
+  max-width: 136px;
 }
 
 .parking-space:hover {

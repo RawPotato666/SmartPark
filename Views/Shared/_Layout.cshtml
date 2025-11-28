@@ -26,33 +26,34 @@
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="About">About</a>
                         </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="ParkingLot" asp-action="Index">Parking Lots</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="ParkingSpot" asp-action="Index">Parking Spots</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-area="" asp-controller="Reservation" asp-action="Index">Reservation</a>
-                                </li>
-                            }
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="ParkingLot" asp-action="Index">Parking Lots</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="ParkingSpot" asp-action="Index">Parking Spots</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Reservation" asp-action="Index">Reservation</a>
+                            </li>
+                        }
                         @if (User.Identity.IsAuthenticated)
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" href="@Url.Action("MyReservations", "Reservation")">My Reservations</a>
-                                </li>
-                            }
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("MyReservations", "Reservation")">My Reservations</a>
+                            </li>
+                        }
                     </ul>
-                    <!-- added login partial -->
+
                     <partial name="_LoginPartial" /> 
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -64,6 +65,7 @@
             &copy; 2025 - SmartPark - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

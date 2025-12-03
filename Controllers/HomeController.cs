@@ -33,6 +33,9 @@ public class HomeController : Controller
         if (lot == null)
             return NotFound();
 
+        ViewBag.SelectedDateTime = DateTime.Now.ToString("yyyy-MM-ddTHH:mm");
+        ViewBag.SelectedEndTime = DateTime.Now.AddHours(1).ToString("yyyy-MM-ddTHH:mm");
+
         return View(lot);
     }
 
@@ -51,8 +54,8 @@ public class HomeController : Controller
                 );                                            
         }
 
-    ViewBag.SelectedDateTime = selectedDateTime;
-    ViewBag.SelectedEndTime = selectedEndTime; 
+        ViewBag.SelectedDateTime = selectedDateTime.ToString("yyyy-MM-ddTHH:mm");
+        ViewBag.SelectedEndTime = selectedEndTime.ToString("yyyy-MM-ddTHH:mm");
 
     return View("ParkingSpots", lot);
     }

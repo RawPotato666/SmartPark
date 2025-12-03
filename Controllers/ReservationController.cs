@@ -80,7 +80,7 @@ namespace SmartPark.Controllers
                 return View(reservation);
             }
 
-            if (reservation.Start < DateTime.Now + TimeSpan.FromMinutes(2))
+            if (reservation.Start < DateTime.Now - TimeSpan.FromMinutes(2))
             {
                 ModelState.AddModelError("", "Start time cannot be in the past.");
                 PopulateSpotDisplay();
@@ -90,8 +90,8 @@ namespace SmartPark.Controllers
             // Check for overlapping reservations for same parking spot
             bool conflict = _context.Reservations.Any(r =>
                 r.ParkingSpotId == reservation.ParkingSpotId &&
-                reservation.Start < r.End &&
-                reservation.End > r.Start
+                reservation.Start <= r.End &&
+                reservation.End >= r.Start
             );
 
             if (conflict)

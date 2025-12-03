@@ -45,10 +45,10 @@ public class HomeController : Controller
         foreach (var spot in lot.ParkingSpots)
         {
             spot.IsOccupied = _context.Reservations
-                .Any(r => r.ParkingSpotId == spot.Id &&
-                    selectedDateTime >= r.Start &&
-                    selectedDateTime <= r.End
-                    );
+            .Any(r => r.ParkingSpotId == spot.Id &&
+                selectedDateTime <= r.End &&
+                selectedEndTime >= r.Start
+                );                                            
         }
 
     ViewBag.SelectedDateTime = selectedDateTime;

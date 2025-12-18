@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -7,13 +6,17 @@ using SmartPark.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// nastavi spremenljivko connectionString za .useSqlServer(connectionString)
-var connectionString = builder.Configuration.GetConnectionString("SmartParkContext");
+// 🔹 CHANGE #1: choose connection string (Docker stays default)
+//var connectionString = builder.Configuration.GetConnectionString("SmartParkContext");
+// If/when you want Azure instead, just change the name to:
+ var connectionString = builder.Configuration.GetConnectionString("AzureDatabaseOblak");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// 🔹 CHANGE #2: keep ONLY ONE DbContext registration
 builder.Services.AddDbContext<SmartParkContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("SmartParkContext")));
+    options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddRoles<IdentityRole>()
@@ -21,7 +24,6 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // Password settings.
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = true;
@@ -29,20 +31,17 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 6;
     options.Password.RequiredUniqueChars = 1;
 
-    // Lockout settings.
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
     options.Lockout.MaxFailedAccessAttempts = 5;
     options.Lockout.AllowedForNewUsers = true;
 
-    // User settings.
     options.User.AllowedUserNameCharacters =
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = false;
 });
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    // Cookie settings
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
 
@@ -51,11 +50,8 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-
-builder.Services.AddDbContext<SmartParkContext>(options =>
-    options.UseSqlServer(connectionString));
-
 builder.Services.AddRazorPages();
+
 var app = builder.Build();
 
 CreateDbIfNotExists(app);
@@ -64,11 +60,10 @@ CreateDbIfNotExists(app);
 if (!app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
-} 
+}
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -77,8 +72,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();
-app.MapRazorPages();
 app.UseAuthorization();
+
+app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
@@ -86,22 +82,18 @@ app.MapControllerRoute(
 
 app.Run();
 
-
 static void CreateDbIfNotExists(IHost host)
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-                try
-                {
-                    var context = services.GetRequiredService<SmartParkContext>();
-                    //context.Database.EnsureCreated();
-                    DbInitializer.Initialize(context);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred creating the DB.");
-                }
-            }
-        }
+{
+    using var scope = host.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<SmartParkContext>();
+        DbInitializer.Initialize(context);
+    }
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "An error occurred creating the DB.");
+    }
+}

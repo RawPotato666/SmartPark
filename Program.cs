@@ -7,9 +7,9 @@ using SmartPark.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// var connectionString = builder.Configuration.GetConnectionString("SmartParkContext");
+var connectionString = builder.Configuration.GetConnectionString("SmartParkContext");
 // If/when you want Azure instead, just change the name to:
- var connectionString = builder.Configuration.GetConnectionString("AzureDatabaseOblak");
+// var connectionString = builder.Configuration.GetConnectionString("AzureDatabaseOblak");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

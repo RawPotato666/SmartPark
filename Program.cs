@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // var connectionString = builder.Configuration.GetConnectionString("SmartParkContext");
 // If/when you want Azure instead, just change the name to:
- var connectionString = builder.Configuration.GetConnectionString("AzureDatabaseOblak");
+var connectionString = builder.Configuration.GetConnectionString("AzureDatabaseOblak");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -52,6 +52,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 CreateDbIfNotExists(app);
@@ -69,6 +70,9 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>{c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");});
 
 app.UseRouting();
 app.UseAuthentication();

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartPark.Data;
 using SmartPark.Models;
+using SmartPark.Filters;
 
 namespace SmartPark.Controllers_Api
 {
@@ -23,6 +24,7 @@ namespace SmartPark.Controllers_Api
 
         // GET: api/UserApi
         [HttpGet]
+        [ApiKeyAuth]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
             return await _context.Users.ToListAsync();

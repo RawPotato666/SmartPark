@@ -24,6 +24,7 @@ namespace SmartPark.Controllers_Api
 
         // GET: api/ReservationApi
         [HttpGet]
+        [ApiKeyAuth]
         public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
         {
             return await _context.Reservations.ToListAsync();
@@ -31,7 +32,7 @@ namespace SmartPark.Controllers_Api
 
         // GET: api/ReservationApi/5
         [HttpGet("{id}")]
-        [ApiKeyAuth]
+
         public async Task<ActionResult<Reservation>> GetReservation(int id)
         {
             var reservation = await _context.Reservations.FindAsync(id);

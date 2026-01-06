@@ -25,6 +25,7 @@ namespace SmartPark.Controllers_Api
 
         // GET: api/ParkingLotApi
         [HttpGet]
+        [ApiKeyAuth]
         public async Task<ActionResult<IEnumerable<ParkingLot>>> GetParkingLots()
         {
             return await _context.ParkingLots.ToListAsync();
